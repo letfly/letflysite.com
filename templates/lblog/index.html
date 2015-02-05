@@ -1,0 +1,19 @@
+{% for blog in blogs %}
+	<div class="blog_body">
+		<div class="blog_title"><a href="/blog/detail/?id={{ blog.id }}">{{ blog.caption }}</a></div>
+		<div class="blog_info">
+			<ul class="blog_info_list">
+				<li>分类：{{ blog.classification }}</li>
+				<li>发表时间：{{ blog.publish_time|date:"Y-m-d H:i" }}</li>
+				<li>标签：
+				{% for tag in blog.tags.all %}
+					{{ tag.tag_name }}
+				{% endfor%}
+				</li>
+			</ul>
+		</div>
+		<div class="blog_description">
+		{{ blog.content }}
+		</div>
+	</div>
+{% endfor %}
