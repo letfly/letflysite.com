@@ -3,7 +3,7 @@
 {% block container %}
 {% for blog in blogs %}
 	<div class="normBox">
-		<div class="blog_title"><a href="/blog/detail/?id={{ blog.id }}">{{ blog.caption }}</a></div>
+		<div class="blog_title"><a href="{% url 'blog_detail' blog.id %}">{{ blog.caption }}</a></div>
 		<div class="blog_info">
 			<ul class="blog_info_list">
 				<li>分类：{{ blog.classification }}</li>
