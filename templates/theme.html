@@ -1,0 +1,46 @@
+{% load staticfiles %}
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>{% block title %}欢迎来访LetflySite{% endblock %}</title>
+	<link href="{% static 'site/v1/css/base.css' %}" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<div class="header bg1">
+	<div class="varea">
+		<div class="logo fltlft">
+			<a href="/"><img src="{% static 'site/v1/img/LOGO.png' %}" alt="Logo for DannySite" height="19" width="120"></a>
+		</div>
+		<div class="nav fltrt">
+			<a class="nav_btn " href="/">首页</a>
+			<a class="nav_btn focus" href="{% url 'blog_home'%}">博客</a>
+			<a class="nav_btn " href="/photo/">图片</a>
+			<a class="nav_btn " href="/interest/">兴趣</a>
+			<a class="nav_btn " href="https://github.com/letfly/letflysite.com" target="_blank">源码</a>
+			<a class="nav_btn " href="/about/">关于</a>
+		</div>
+		<div class="clearfloat"></div>
+	</div>
+</div>
+<div class="container">
+	{% block container %}
+	{% endblock %}
+</div>
+<div class="footer bg1">
+	<div class="varea">
+		<div class="nav_buttom fltlft">
+			<a class="nav_btn normDecorA" href="/">返回首页</a>
+			<a class="nav_btn normDecorA" href="/about/#contact">与我联系</a>
+			<a class="nav_btn normDecorA" href="/account/login/">管理登录</a>
+		</div>
+		<div class="copyright enFont fltrt">
+			<span>Designed by <b><i>Letfly</i></b> | Copyright 2015 - 2015 <b><i>LetflyWork</i> Project</b></span>
+		</div>
+		<div class="clearfloat"></div>
+	</div>
+</div>
+</body>
+
+</html>

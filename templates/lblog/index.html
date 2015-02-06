@@ -1,5 +1,8 @@
+{% extends 'theme.html' %}
+
+{% block container %}
 {% for blog in blogs %}
-	<div class="blog_body">
+	<div class="normBox">
 		<div class="blog_title"><a href="/blog/detail/?id={{ blog.id }}">{{ blog.caption }}</a></div>
 		<div class="blog_info">
 			<ul class="blog_info_list">
@@ -17,3 +20,4 @@
 		</div>
 	</div>
 {% endfor %}
+{% endblock %}
