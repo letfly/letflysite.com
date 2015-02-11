@@ -1,19 +1,17 @@
 from django.contrib import admin
 
-from lblog.models import Tag, Author, Article, Classification
+from lblog.models import Blog, Theme, Category, Tag, Topic
 
-class AuthorAdmin(admin.ModelAdmin):
-	list_display = ('name', 'email', 'website')
-	search_fields = ('name',)
-
-class ArticleAdmin(admin.ModelAdmin):
-	list_display = ('caption', 'subcaption', 'classification', 'author', 'publish_time', 'update_time')
+class BlogAdmin(admin.ModelAdmin):
+	list_display = ('title', 'theme', 'category', 'author', 'publish_time', 'update_time')
 	list_filter = ('publish_time',)
 	date_hierarchy = 'publish_time'
 	ordering = ('-publish_time',)
 	filter_horizontal = ('tags',)
 
-admin.site.register(Article, ArticleAdmin)
-admin.site.register(Author, AuthorAdmin)
-admin.site.register(Tag)
-admin.site.register(Classification)
+class CAdmin(admin.ModelAdmin):
+	fields = ['name']
+	list_display = ['name', 'count', 'created']
+
+admin.site.register(Blog, BlogAdmin)
+admin.site.register([Theme, Category, Tag, Topic], CAdmin)
