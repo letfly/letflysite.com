@@ -7,7 +7,7 @@
 	<div class="cmtForm bg1 fltlft">
 		<div class="bg2" id="cutting_line"></div>
 		<div class="bg1" id="contact_form_box">
-			<form action="/comments/" method="post" id="comment_form">
+			<form action="{% url 'blog_comment' blog.id %}" method="post" id="comment_form">
 				{% csrf_token %}
 				<div class="inputBox fltlft">
 					{{ form.user_name|attr:"class:xnorminput"|attr:"placeholder:您的称呼" }}

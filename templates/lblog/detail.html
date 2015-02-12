@@ -7,7 +7,21 @@
 {% endblock %}
 
 {% block container %}
+	{{blog.title}}
 	<div class="normBox">
+		{% with comments|length as len %}
+			{% if len %}
+				<div class="cmtBox fltlft">
+					<div id="cmtTitle">
+						<span class="fs24">有<span id="cmt_count">{{ len }}</span>条留言：</span>
+					</div>
+					<!--{{comments}}为[<DComment: letfly: 赞！...>]-->
+					{% for comment in comments %}
+						{% include "lblog/includes/cmtdisplaybox.html"%}
+					{% endfor %}
+				</div>
+			{% endif %}
+		{% endwith %}
 		{% include "lblog/includes/cmtformbox.html" %}
 		<div class="clearfloat"></div>
 	<!-- end blog_box --></div>

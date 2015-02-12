@@ -1,13 +1,21 @@
 
 from core.views import BaseView, AccessAuthMixin
 #from django.db.models.query_utils import Q
-from django.http.response import Http404, HttpResponseRedirect
 from django.shortcuts import render_to_response
+from django.http.response import Http404, HttpResponseRedirect
 from django.template import RequestContext
 
-#from core.models import DComment
-from lblog.forms import CommentForm 
+from django.views.generic.edit import FormView
+from captcha.models import CaptchaStore
+from captcha.helpers import captcha_image_url
+from django.contrib.sites.models import get_current_site
+from django.db.models.expressions import F
+
 from lblog.models import Blog, Category, Tag
+from lblog.forms import CommentForm 
+from core.models import DComment
+
+from core.http import JsonResponse
 
 class BlogBase(BaseView):
 	tags_shown_count = 50
@@ -60,11 +68,66 @@ class GetDetail(BlogBase, AccessAuthMixin):
 
 		extra_context = {
 			'blog': blog,
-			'relates': relates,
+			#'relates': relates,
 			#'recommends': self.get_recommends(blog),
-			#'comments': DComment.objects.get_comments(blog)
+			'comments': DComment.objects.get_comments(blog)
 		}
 		return self.render_to_response(self.get_context_data(extra_context))
+
+class Comment(FormView, AccessAuthMixin):
+    form_class = CommentForm
+    http_method_names = ['post']
+    template_name_comment = 'lblog/includes/cmtdisplaybox.html'
+    template_name_reply = 'lblog/includes/replydisplaybox.html'
+    template_name_comment_m = 'lblog/includes/cmtdisplaybox_m.html'
+    template_name_reply_m = 'lblog/includes/replydisplaybox_m.html'
+
+    def post(self, request, bid, *args, **kwargs):
+        try:
+            self.blog = Blog.objects.get(id=bid, is_published=True, is_draft=False)
+        except Blog.DoesNotExist:
+            raise Http404
+
+        return super(Comment, self).post(request, *args, **kwargs)
+
+    def get_template_name(self, is_related):
+        if is_related:
+            if self.request.session.get('VIEW_MODE') == 'mobile':
+                return self.template_name_reply_m
+            return self.template_name_reply
+        else:
+            if self.request.session.get('VIEW_MODE') == 'mobile':
+                return self.template_name_comment_m
+            return self.template_name_comment
+
+    def form_valid(self, form):
+        comment = form.save(self.blog, self.get_client_ip(self.request),
+                            get_current_site(self.request))
+
+        self.blog.comment_count = F('comment_count') + 1
+        self.blog.save()
+
+        self.template_name = self.get_template_name(comment.related)
+        if comment.related:
+            context = {'reply': comment}
+        else:
+            context = {'comment': comment}
+
+        html = self.render_to_response(context)
+        html.render()
+        data = {
+            'html': html.content
+        }
+
+        return JsonResponse(status=1, data=data)
+
+    def form_invalid(self, form):
+        # Refresh captcha
+        key = CaptchaStore.generate_key()
+        url = captcha_image_url(key)
+        return JsonResponse(status=0, msg=form.errors.popitem()[1],
+                            data={'captcha': [key, url]})
+
 
 #def blog_detail(request,bid):
 #	blog = Blog.objects.all().get(id=bid)

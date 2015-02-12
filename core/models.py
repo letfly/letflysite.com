@@ -8,13 +8,14 @@ LetflyWork Project
 
 from django.contrib.comments.models import Comment
 from django.contrib.comments.managers import CommentManager
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 
 class DCommentManager(CommentManager):
 	def get_comments(self, obj):
 		try:
 			obj_type = ContentType.objects.get_for_model(obj)
-			return self.filter(content_type=obj_type, objects_pk=obj.pk, related=None, is_public=True)
+			return self.filter(content_type=obj_type, object_pk=obj.pk, related=None, is_public=True)#obj_type为<ContentType: 博客>，obj.pk为1L
 		except:
 			return []
 

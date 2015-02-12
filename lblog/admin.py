@@ -3,7 +3,7 @@ from django.contrib import admin
 from lblog.models import Blog, Theme, Category, Tag, Topic
 
 class BlogAdmin(admin.ModelAdmin):
-	list_display = ('title', 'theme', 'category', 'author', 'publish_time', 'update_time')
+	list_display = ('title', 'theme', 'category', 'publish_time', 'update_time')
 	list_filter = ('publish_time',)
 	date_hierarchy = 'publish_time'
 	ordering = ('-publish_time',)

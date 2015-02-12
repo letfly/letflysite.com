@@ -4,24 +4,24 @@ from django.db import models
 from django.db.models.expressions import F
 
 class BaseModel(models.Model):
-    name = models.CharField(u'名称', max_length=30)
-    count = models.IntegerField(u'引用', default=0)
-    created = models.DateTimeField(u'创建时间', auto_now_add=True)
+	name = models.CharField(u'名称', max_length=30)
+	count = models.IntegerField(u'引用', default=0)
+	created = models.DateTimeField(u'创建时间', auto_now_add=True)
 
-    def __unicode__(self):
-        return self.name
+	def __unicode__(self):
+		return self.name
 
-    def incr(self, num=1):
-        self.count = F('count') + num
-        self.save()
+	def incr(self, num=1):
+		self.count = F('count') + num
+		self.save()
 
-    def decr(self, num=1):
-        self.count = F('count') - num
-        self.save()
+	def decr(self, num=1):
+		self.count = F('count') - num
+		self.save()
 
-    class Meta:
-        abstract = True
-        ordering = ['-created']
+	class Meta:
+		abstract = True
+		ordering = ['-created']
 
 class Tag(BaseModel):
 	tag_name = models.CharField(max_length=20)
@@ -32,18 +32,18 @@ class Tag(BaseModel):
 
 class Category(BaseModel):
 
-    class Meta:
-        db_table = 'dblog_category'
-        verbose_name = u'分类'
-        verbose_name_plural = u'分类'
+	class Meta:
+		db_table = 'dblog_category'
+		verbose_name = u'分类'
+		verbose_name_plural = u'分类'
 
-class Author(models.Model):
-	name = models.CharField(max_length=30)
-	email = models.EmailField(blank=True)
-	website = models.URLField(blank=True)
+#class Author(models.Model):
+#	name = models.CharField(max_length=30)
+#	email = models.EmailField(blank=True)
+#	website = models.URLField(blank=True)
 
-	def __unicode__(self):
-		return u'%s' % (self.name)
+#	def __unicode__(self):
+#		return u'%s' % (self.name)
 
 class Theme(BaseModel):
 
@@ -67,7 +67,7 @@ class Blog(models.Model):
 	topic = models.ForeignKey(Topic, verbose_name=u'专题', null=True, blank=True)
 	publish_time = models.DateTimeField(auto_now_add=True)
 	update_time = models.DateTimeField(auto_now=True)
-	author = models.ForeignKey(Author, verbose_name=u'作者')
+#	author = models.ForeignKey(Author, verbose_name=u'作者')
 	created = models.DateTimeField(u'创建时间', auto_now_add=True)
 	updated = models.DateTimeField(u'修改时间', auto_now=True)
 	tags = models.ManyToManyField(Tag, blank=True, verbose_name=u'标签')
