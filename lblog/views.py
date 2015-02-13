@@ -1,3 +1,10 @@
+# -*-coding:utf-8 -*-
+'''
+Created on 2015-2-5
+
+@author: Letfly<letfly@outlook.com>
+LetflyWork Project
+'''
 
 from core.views import BaseView, AccessAuthMixin
 #from django.db.models.query_utils import Q

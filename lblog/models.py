@@ -1,4 +1,10 @@
 # -*-coding:utf-8 -*-
+'''
+Created on 2015-2-5
+
+@author: Letfly<letfly@outlook.com>
+LetflyWork Project
+'''
 
 from django.db import models
 from django.db.models.expressions import F

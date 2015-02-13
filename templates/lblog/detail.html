@@ -1,14 +1,15 @@
-{% extends 'theme.html' %}
+{% extends 'lblog/base.html' %}
 {% load staticfiles %}
 
 {% block title %}{{ blog.title }} - 博客详情 - DannySite{% endblock %}
-{% block extra_link %}
-	<link href="{% static 'site/v1/css/blog.css' %}" rel="stylesheet" type="text/css">
+{% block inner_extra_js %}
+	<script src="{% static 'site/v1/js/captcha.js' %}" type="text/javascript"></script>
 {% endblock %}
 
+
 {% block container %}
-	{{blog.title}}
 	<div class="normBox">
+		{% include "lblog/includes/sidebar.html" %}
 		{% with comments|length as len %}
 			{% if len %}
 				<div class="cmtBox fltlft">
