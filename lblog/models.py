@@ -97,3 +97,32 @@ class Blog(models.Model):
 		verbose_name = u'博客'
 		verbose_name_plural = u'boke'
 		
+
+def blog_pre_save(sender, **kwargs):
+	curr = kwargs.get('instance')
+	try:
+		prev = Blog.objects.get(id=curr.id)
+	except Blog.DoesNotExist:
+		if not curr.is_draft or curr.is_published:
+			curr.theme.incr()
+			curr.category.incr()
+	else:
+		for item in ['theme', 'category']:
+			prev_ps = prev.is_published and not prev.is_draft
+			curr_ps = curr.is_published and not curr.is_draft
+
+			prev_obj, curr_obj = getattr(prev, item), getattr(curr, item)
+
+			if prev_ps and not curr_ps or prev_ps and not prev_obj == curr_obj:
+				prev_obj.decr()
+
+			if curr_ps and not prev_ps or curr_ps and not prev_obj == curr_obj:
+				curr_obj.incr()
+
+
+def blog_pre_delete(sender, **kwargs):
+	instance = kwargs.get('instance')
+	for item in ['theme', 'category']:
+		getattr(instance, item).decr()
+	handle_in_batches(instance.tags.all(), 'decr')
+

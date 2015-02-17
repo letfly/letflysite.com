@@ -10,6 +10,7 @@
 {% block container %}
 	<div class="normBox">
 		{% include "lblog/includes/sidebar.html" %}
+    	{% include "lblog/includes/blogbox.html" %}
 		{% with comments|length as len %}
 			{% if len %}
 				<div class="cmtBox fltlft">

@@ -91,7 +91,7 @@
 
 .searchBox #search_icon {
 	z-index: 100;
-	background-image: url('/static/site/v3/img/s_icon.png');
+	background-image: url('/static/site/v1/img/s_icon.png');
 	width: 24px;
 	height: 28px;
 	position: absolute;

@@ -3,6 +3,9 @@
 
 {% block extra_link %}
 	<link href="{% static 'site/v1/css/blog.css' %}"rel="stylesheet"type="text/css">
+	<link href="{% static 'syntaxhighlighter/css/shCore.css' %}" type="text/css" rel="stylesheet">
+	<link href="{% static 'syntaxhighlighter/css/shThemeDefault.css' %}" type="text/css" rel="stylesheet">
+	<link rel="alternate" type="application/rss" title="DannySite博客" href="{% url 'blog_rss' %}" />
 {% endblock %}
 {% block extra_js %}
 	<script src="{% static 'site/v1/js/jquery-1.8.2.min.js' %}"></script>
