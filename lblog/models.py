@@ -8,6 +8,7 @@ LetflyWork Project
 
 from django.db import models
 from django.db.models.expressions import F
+from django.db.models.signals import m2m_changed, pre_save, pre_delete
 
 class BaseModel(models.Model):
 	name = models.CharField(u'名称', max_length=30)
@@ -98,6 +99,10 @@ class Blog(models.Model):
 		verbose_name_plural = u'boke'
 		
 
+def handle_in_batches(instances, method):
+	for instance in instances:
+		getattr(instance, method)()
+
 def blog_pre_save(sender, **kwargs):
 	curr = kwargs.get('instance')
 	try:
@@ -119,10 +124,20 @@ def blog_pre_save(sender, **kwargs):
 			if curr_ps and not prev_ps or curr_ps and not prev_obj == curr_obj:
 				curr_obj.incr()
 
-
 def blog_pre_delete(sender, **kwargs):
 	instance = kwargs.get('instance')
 	for item in ['theme', 'category']:
 		getattr(instance, item).decr()
 	handle_in_batches(instance.tags.all(), 'decr')
 
+def tags_changed(sender, **kwargs):
+	if kwargs.get('action') == 'pre_clear':
+		handle_in_batches(kwargs.get('instance').tags.all(), 'decr')
+	elif kwargs.get('action') == 'post_remove':
+		handle_in_batches(Tag.objects.filter(id__in=kwargs.get('pk_set')), 'decr')
+	elif kwargs.get('action') == 'post_add':
+		handle_in_batches(Tag.objects.filter(id__in=kwargs.get('pk_set')), 'incr')
+
+m2m_changed.connect(tags_changed, sender=Blog.tags.through)
+pre_save.connect(blog_pre_save, sender=Blog)
+pre_delete.connect(blog_pre_delete, sender=Blog)

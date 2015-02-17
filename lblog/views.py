@@ -19,6 +19,9 @@ from django.contrib.sites.models import get_current_site
 from django.db.models.expressions import F
 
 from lblog.models import Blog, Category, Tag
+from common.paginator import Paginator
+import urlparse
+
 from lblog.forms import CommentForm 
 from core.models import DComment
 
@@ -36,11 +39,90 @@ class BlogBase(BaseView):
 		context.update(extra_context)
 		return context
 
-def blog_home(request):
-	blogs = Blog.objects.all().order_by('-publish_time')
-	
-	return render_to_response('lblog/index.html', {"blogs": blogs}, context_instance=RequestContext(request))
+class GetHome(BlogBase):
+	template_name = 'lblog/index.html'
+	template_name_m = 'lblog/index_m.html'
+	page_size = 5
+	section_size = 10
 
+	def get_session_key(self):
+		return 'blog:list'
+
+	def get_loader(self, blogs):
+		def loader(offset, num):
+			return blogs[offset:offset + num]
+		return loader
+	
+	def get_template_names(self):
+		if self.request.session.get('VIEW_MODE') == 'mobile':
+			return [self.template_name_m]
+		return [self.template_name]
+	
+	def get_queryset(self, cate_id, tag_id, q):
+		if cate_id:
+			if not cate_id.isdigit():
+				raise Http404
+			try:
+				cate = Category.objects.get(id=cate_id)
+			except Category.DoesNotExist:
+				raise Http404
+
+			blogs = Blog.objects.filter(cate=cate)
+			filter = cate.name
+		elif tag_id:
+			if not tag_id.isdigit():
+				raise Http404
+			try:
+				tag = Tag.objects.get(id=tag_id)
+			except Tag.DoesNotExist:
+				raise Http404
+
+			blogs = tag.blog_set.all()
+			filter = tag.name
+		else:
+			blogs = Blog.objects.all()
+			filter = None
+		return blogs.filter(is_published=True, is_draft=False), filter
+	
+	def get_url_prefix(self, full_path, cate_id, tag_id, q):
+		query = []
+		if cate_id:
+			query.append('cat={0}'.format(cate_id))
+		elif tag_id:
+			query.append('tag={0}'.format(tag_id))
+		elif q:
+			query.append(u'search={0}'.format(q))
+		query.append('page=')
+
+		parsed_url = urlparse.urlparse(full_path)
+
+		return urlparse.urlunparse((parsed_url.scheme,
+									parsed_url.netloc,
+									parsed_url.path,
+									parsed_url.params,
+									'&'.join(query), ''))
+
+	def get(self, request):
+		cate_id = request.GET.get('cat', '')
+		tag_id = request.GET.get('tag', '')
+		q = request.GET.get('search', '')
+
+		blogs, filter = self.get_queryset(cate_id, tag_id, q)
+		paginator = Paginator(self.get_loader(blogs), self.page_size,
+							  self.section_size, blogs.count())
+		page_instance = paginator.page(request, self.get_session_key())
+
+		url_prefix = self.get_url_prefix(request.get_full_path(),
+										 cate_id, tag_id, q)
+
+		extra_context = {'blogs': page_instance.page_items,
+						 'filter': filter,
+						 'page_instance': page_instance,
+						 'page_range': page_instance.get_page_range(2, 4),
+						 'url_prefix': url_prefix}
+
+		return self.render_to_response(self.get_context_data(extra_context))
+		
 class GetDetail(BlogBase, AccessAuthMixin):
 	template_name = 'lblog/detail.html'
 	template_name_m = 'lblog/detail_m.html'
@@ -82,58 +164,58 @@ class GetDetail(BlogBase, AccessAuthMixin):
 		return self.render_to_response(self.get_context_data(extra_context))
 
 class Comment(FormView, AccessAuthMixin):
-    form_class = CommentForm
-    http_method_names = ['post']
-    template_name_comment = 'lblog/includes/cmtdisplaybox.html'
-    template_name_reply = 'lblog/includes/replydisplaybox.html'
-    template_name_comment_m = 'lblog/includes/cmtdisplaybox_m.html'
-    template_name_reply_m = 'lblog/includes/replydisplaybox_m.html'
+	form_class = CommentForm
+	http_method_names = ['post']
+	template_name_comment = 'lblog/includes/cmtdisplaybox.html'
+	template_name_reply = 'lblog/includes/replydisplaybox.html'
+	template_name_comment_m = 'lblog/includes/cmtdisplaybox_m.html'
+	template_name_reply_m = 'lblog/includes/replydisplaybox_m.html'
 
-    def post(self, request, bid, *args, **kwargs):
-        try:
-            self.blog = Blog.objects.get(id=bid, is_published=True, is_draft=False)
-        except Blog.DoesNotExist:
-            raise Http404
+	def post(self, request, bid, *args, **kwargs):
+		try:
+			self.blog = Blog.objects.get(id=bid, is_published=True, is_draft=False)
+		except Blog.DoesNotExist:
+			raise Http404
 
-        return super(Comment, self).post(request, *args, **kwargs)
+		return super(Comment, self).post(request, *args, **kwargs)
 
-    def get_template_name(self, is_related):
-        if is_related:
-            if self.request.session.get('VIEW_MODE') == 'mobile':
-                return self.template_name_reply_m
-            return self.template_name_reply
-        else:
-            if self.request.session.get('VIEW_MODE') == 'mobile':
-                return self.template_name_comment_m
-            return self.template_name_comment
+	def get_template_name(self, is_related):
+		if is_related:
+			if self.request.session.get('VIEW_MODE') == 'mobile':
+				return self.template_name_reply_m
+			return self.template_name_reply
+		else:
+			if self.request.session.get('VIEW_MODE') == 'mobile':
+				return self.template_name_comment_m
+			return self.template_name_comment
 
-    def form_valid(self, form):
-        comment = form.save(self.blog, self.get_client_ip(self.request),
-                            get_current_site(self.request))
+	def form_valid(self, form):
+		comment = form.save(self.blog, self.get_client_ip(self.request),
+							get_current_site(self.request))
 
-        self.blog.comment_count = F('comment_count') + 1
-        self.blog.save()
+		self.blog.comment_count = F('comment_count') + 1
+		self.blog.save()
 
-        self.template_name = self.get_template_name(comment.related)
-        if comment.related:
-            context = {'reply': comment}
-        else:
-            context = {'comment': comment}
+		self.template_name = self.get_template_name(comment.related)
+		if comment.related:
+			context = {'reply': comment}
+		else:
+			context = {'comment': comment}
 
-        html = self.render_to_response(context)
-        html.render()
-        data = {
-            'html': html.content
-        }
+		html = self.render_to_response(context)
+		html.render()
+		data = {
+			'html': html.content
+		}
 
-        return JsonResponse(status=1, data=data)
+		return JsonResponse(status=1, data=data)
 
-    def form_invalid(self, form):
-        # Refresh captcha
-        key = CaptchaStore.generate_key()
-        url = captcha_image_url(key)
-        return JsonResponse(status=0, msg=form.errors.popitem()[1],
-                            data={'captcha': [key, url]})
+	def form_invalid(self, form):
+		# Refresh captcha
+		key = CaptchaStore.generate_key()
+		url = captcha_image_url(key)
+		return JsonResponse(status=0, msg=form.errors.popitem()[1],
+							data={'captcha': [key, url]})
 
 
 #def blog_detail(request,bid):
