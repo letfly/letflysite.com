@@ -12,10 +12,10 @@
 <div class="header bg1">
 	<div class="varea">
 		<div class="logo fltlft">
-			<a href="/"><img src="{% static 'site/v1/img/LOGO.png' %}" alt="Logo for DannySite" height="19" width="120"></a>
+			<a href="{% url 'home' %}"><img src="{% static 'site/v1/img/LOGO.png' %}" alt="Logo for DannySite" height="19" width="120"></a>
 		</div>
 		<div class="nav fltrt">
-			<a class="nav_btn {% block nav_1 %}{% endblock %}" href="/">首页</a>
+			<a class="nav_btn {% block nav_1 %}{% endblock %}" href="{% url 'home' %}">首页</a>
 			<a class="nav_btn {% block nav_2 %}{% endblock %}" href="{% url 'blog_home'%}">博客</a>
 			<a class="nav_btn {% block nav_3 %}{% endblock %}" href="/photo/">图片</a>
 			<a class="nav_btn {% block nav_4 %}{% endblock %}" href="/interest/">兴趣</a>

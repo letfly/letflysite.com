@@ -15,7 +15,7 @@ class BaseModel(models.Model):
 	count = models.IntegerField(u'引用', default=0)
 	created = models.DateTimeField(u'创建时间', auto_now_add=True)
 
-	def __unicode__(self):
+	def __uicode__(self):
 		return self.name
 
 	def incr(self, num=1):
@@ -40,7 +40,7 @@ class Tag(BaseModel):
 class Category(BaseModel):
 
 	class Meta:
-		db_table = 'dblog_category'
+		db_table = 'lblog_category'
 		verbose_name = u'分类'
 		verbose_name_plural = u'分类'
 
@@ -55,7 +55,7 @@ class Category(BaseModel):
 class Theme(BaseModel):
 
 	class Meta:
-		db_table = 'dblog_theme'
+		db_table = 'lblog_theme'
 		verbose_name = u'主题'
 		verbose_name_plural = u'zhuti'
 
@@ -63,7 +63,7 @@ class Topic(BaseModel):
 	description = models.CharField(u'描述', max_length=2000, blank=True)
 
 	class Meta:
-		db_table = 'dblog_topic'
+		db_table = 'lblog_topic'
 		verbose_name = u'专题'
 		verbose_name_plural = u'专题'
 
