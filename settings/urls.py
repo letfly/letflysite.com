@@ -1,3 +1,4 @@
+#coding:utf8
 from django.conf.urls import patterns, include, url
 from lsite.view import Index
 from django.conf import settings
@@ -14,10 +15,11 @@ urlpatterns = patterns('',
 	# url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
 	# Uncomment the next line to enable the admin:
-	url(r'^$', Index.as_view(), name='home'),
 	url(r'^admin/', include(admin.site.urls)),
+	url(r'^$', Index.as_view(), name='home'),
 	url(r'^blog/',include('lblog.urls')),
 	url(r'^captcha/', include('captcha.urls')),
+	url(r'^ueditor/', include('ueditor.urls')),
 )
 
 if settings.DEBUG:

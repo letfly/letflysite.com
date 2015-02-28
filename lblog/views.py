@@ -32,7 +32,7 @@ class BlogBase(BaseView):
 
 	def get_context_data(self, extra_context):
 		context = {
-			'categories': Category.objects.exclude(count=0),
+			'categorygories': Category.objects.exclude(count=0),
 			'tags': Tag.objects.exclude(count=0).order_by('?')[:self.tags_shown_count],
 			'pblogs': Blog.objects.all().order_by('-click_count', '-created')[:8],
 		}
@@ -58,17 +58,17 @@ class GetHome(BlogBase):
 			return [self.template_name_m]
 		return [self.template_name]
 	
-	def get_queryset(self, cate_id, tag_id, q):
-		if cate_id:
-			if not cate_id.isdigit():
+	def get_queryset(self, category_id, tag_id, q):
+		if category_id:
+			if not category_id.isdigit():
 				raise Http404
 			try:
-				cate = Category.objects.get(id=cate_id)
+				category = Category.objects.get(id=category_id)
 			except Category.DoesNotExist:
 				raise Http404
 
-			blogs = Blog.objects.filter(cate=cate)
-			filter = cate.name
+			blogs = Blog.objects.filter(category=category)
+			filter = category.name
 		elif tag_id:
 			if not tag_id.isdigit():
 				raise Http404
@@ -84,10 +84,10 @@ class GetHome(BlogBase):
 			filter = None
 		return blogs.filter(is_published=True, is_draft=False), filter
 	
-	def get_url_prefix(self, full_path, cate_id, tag_id, q):
+	def get_url_prefix(self, full_path, category_id, tag_id, q):
 		query = []
-		if cate_id:
-			query.append('cat={0}'.format(cate_id))
+		if category_id:
+			query.append('cat={0}'.format(category_id))
 		elif tag_id:
 			query.append('tag={0}'.format(tag_id))
 		elif q:
@@ -103,22 +103,22 @@ class GetHome(BlogBase):
 									'&'.join(query), ''))
 
 	def get(self, request):
-		cate_id = request.GET.get('cat', '')
+		category_id = request.GET.get('cat', '')
 		tag_id = request.GET.get('tag', '')
 		q = request.GET.get('search', '')
 
-		blogs, filter = self.get_queryset(cate_id, tag_id, q)
+		blogs, filter = self.get_queryset(category_id, tag_id, q)
 		paginator = Paginator(self.get_loader(blogs), self.page_size,
 							  self.section_size, blogs.count())
 		page_instance = paginator.page(request, self.get_session_key())
 
 		url_prefix = self.get_url_prefix(request.get_full_path(),
-										 cate_id, tag_id, q)
+										 category_id, tag_id, q)
 
 		extra_context = {'blogs': page_instance.page_items,
 						 'filter': filter,
 						 'page_instance': page_instance,
-						 'page_range': page_instance.get_page_range(2, 4),
+						 'page_range': page_instance.get_page_range(2, 6),
 						 'url_prefix': url_prefix}
 
 		return self.render_to_response(self.get_context_data(extra_context))
@@ -140,7 +140,7 @@ class GetDetail(BlogBase, AccessAuthMixin):
 
 	#def get_recommends(self, curr):
 		#return Blog.objects.filter(Q(tags__in=curr.tags.all()) |
-								   #Q(cate=curr.cate),
+								   #Q(category=curr.cate),
 								   #is_draft=False,
 								   #is_published=True).exclude(id=curr.id).distinct()[:self.max_recommended_count]
 

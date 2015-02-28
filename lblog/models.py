@@ -11,11 +11,11 @@ from django.db.models.expressions import F
 from django.db.models.signals import m2m_changed, pre_save, pre_delete
 
 class BaseModel(models.Model):
-	name = models.CharField(u'名称', max_length=30)
+	name = models.CharField(u'名称d', max_length=30)
 	count = models.IntegerField(u'引用', default=0)
 	created = models.DateTimeField(u'创建时间', auto_now_add=True)
 
-	def __uicode__(self):
+	def __unicode__(self):
 		return self.name
 
 	def incr(self, num=1):
@@ -31,14 +31,14 @@ class BaseModel(models.Model):
 		ordering = ['-created']
 
 class Tag(BaseModel):
-	tag_name = models.CharField(max_length=20)
-	create_time = models.DateTimeField(auto_now_add=True)
-
-	def __unicode__(self):
-		return self.tag_name
+	
+	class Meta:
+		db_table = 'lblog_tag'
+		verbose_name = u'标签'
+		verbose_name_plural = u'标签'
 
 class Category(BaseModel):
-
+	
 	class Meta:
 		db_table = 'lblog_category'
 		verbose_name = u'分类'
@@ -73,11 +73,11 @@ class Blog(models.Model):
 	category = models.ForeignKey(Category, verbose_name=u'分类')
 	topic = models.ForeignKey(Topic, verbose_name=u'专题', null=True, blank=True)
 	publish_time = models.DateTimeField(auto_now_add=True)
-	update_time = models.DateTimeField(auto_now=True)
+	update_time = models.DateTimeField(auto_now_add=True)
 #	author = models.ForeignKey(Author, verbose_name=u'作者')
 	created = models.DateTimeField(u'创建时间', auto_now_add=True)
 	updated = models.DateTimeField(u'修改时间', auto_now=True)
-	tags = models.ManyToManyField(Tag, blank=True, verbose_name=u'标签')
+	tags = models.ManyToManyField(Tag, blank=True, verbose_name=u'标签', null=True)
 	content = models.TextField(u'正文')
 
 	is_draft = models.BooleanField(u'草稿状态', default=False)
@@ -92,6 +92,9 @@ class Blog(models.Model):
 		#cache_key = settings.BLOG_VISITORS_CACHE_KEY.format(self.id)
 		#coon = get_redis()
 		#if int()
+
+	def __unicode__(self):
+		return unicode(self.title)
 
 	class Meta:
 		

@@ -2,8 +2,8 @@
 {% load staticfiles %}
 
 {% block inner_extra_js %}
-	<script src="{% static 'site/v3/js/jquery-1.8.2.min.js' %}"></script>
-	<script src="{% static 'site/v3/js/index.js' %}"></script>
+	<script src="{% static 'site/v1/js/jquery-1.8.2.min.js' %}"></script>
+	<script src="{% static 'site/v1/js/index.js' %}"></script>
 	<script>
 		(function($){
 			$.getUrlParam = function(name){
@@ -18,7 +18,7 @@
 				var hl = new Highlighter();
 				nodes = $('.contentBox').find('p');
 				for (var i=0; i < nodes.length;i++){
-				    hl.highlight(nodes[i], key);  
+					hl.highlight(nodes[i], key);  
 				}
 			}
 		});
@@ -27,11 +27,14 @@
 
 {% block container %}
 	<div class="normBox">
-    	{% include "lblog/includes/sidebar.html" %}
-    	{% for blog in blogs %}
-    		{% include "lblog/includes/blogbox.html" %}
-    	{% endfor %}
-        <div class="clearfloat"></div> 
+		{% include "lblog/includes/sidebar.html" %}
+		{% for blog in blogs %}
+			{% include "lblog/includes/blogbox.html" %}
+		{% endfor %}
+		{% if page_instance.has_other_pages %}
+			{% include "lblog/includes/paginator.html" %}
+		{% endif %}
+		<div class="clearfloat"></div> 
 	<!-- end blog_box --></div>
-    <div class="clearfloat"></div>
+	<div class="clearfloat"></div>
 {% endblock %}
