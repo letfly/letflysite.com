@@ -24,7 +24,7 @@ class DCommentManager(CommentManager):
 			return self.get(id=cmt_id)
 		except:
 			return None
-	
+
 class DComment(Comment):
 	related = models.ForeignKey('DComment', null=True, blank=True, related_name='related_comment')
 	mail_reply = models.BooleanField(u'接受回复邮件', default=True)

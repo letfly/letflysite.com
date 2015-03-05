@@ -1,14 +1,14 @@
-DannySite
+LetflySite
 =========
 
-Source code to dannysite.com
+Source code to letflysite.com
 
-Visit my website at http://www.dannysite.com/
+Visit my website at http://www.letflysite.com/
 
 
 ### 介绍
 
-DannySite是一个由个人兴趣与学习实践而生的个人网站。网站采用Django框架开发，功能主要包含博客和图片等。
+LetflySite是一个由个人兴趣与学习实践而生的个人网站。网站采用Django框架开发，功能主要包含博客和图片等。
 
 ### 功能
 
@@ -29,6 +29,6 @@ DannySite是一个由个人兴趣与学习实践而生的个人网站。网站�
 * Ueditor: 上传图片等重写View后未考虑路径传入；
 * Mail: 注册邀请邮件未投递。
 
-### 关于DannySite - UI的版权
+### 关于LetflySite - UI的版权
 
 作为非设计出生的我来说，做一套像样的UI对我来说并不容易，因此我个人保留UI上的版权。感谢配合！

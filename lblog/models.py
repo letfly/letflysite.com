@@ -9,6 +9,7 @@ LetflyWork Project
 from django.db import models
 from django.db.models.expressions import F
 from django.db.models.signals import m2m_changed, pre_save, pre_delete
+from user.models import User
 
 class BaseModel(models.Model):
 	name = models.CharField(u'名称d', max_length=30)
@@ -44,14 +45,6 @@ class Category(BaseModel):
 		verbose_name = u'分类'
 		verbose_name_plural = u'分类'
 
-#class Author(models.Model):
-#	name = models.CharField(max_length=30)
-#	email = models.EmailField(blank=True)
-#	website = models.URLField(blank=True)
-
-#	def __unicode__(self):
-#		return u'%s' % (self.name)
-
 class Theme(BaseModel):
 
 	class Meta:
@@ -72,9 +65,7 @@ class Blog(models.Model):
 	theme = models.ForeignKey(Theme, verbose_name=u'主题')
 	category = models.ForeignKey(Category, verbose_name=u'分类')
 	topic = models.ForeignKey(Topic, verbose_name=u'专题', null=True, blank=True)
-	publish_time = models.DateTimeField(auto_now_add=True)
-	update_time = models.DateTimeField(auto_now_add=True)
-#	author = models.ForeignKey(Author, verbose_name=u'作者')
+	author = models.ForeignKey(User, verbose_name=u'作者')
 	created = models.DateTimeField(u'创建时间', auto_now_add=True)
 	updated = models.DateTimeField(u'修改时间', auto_now=True)
 	tags = models.ManyToManyField(Tag, blank=True, verbose_name=u'标签', null=True)

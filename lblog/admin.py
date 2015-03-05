@@ -15,16 +15,15 @@ from django.db import models
 class BlogAdmin(admin.ModelAdmin):
 	fields = ['title', 'theme', 'category', 'topic', 
 			  'content', 'tags', 'is_draft', 'is_published']
-	list_display = ['title', 'theme', 'category', 'tag_display', 'created',
+	list_display = ['title', 'theme', 'category', 'author', 'tag_display', 'created',
 					'click_count', 'comment_count', 'is_draft', 'is_published']
 	list_editable = ['is_draft', 'is_published']
 	list_filter = ['theme__name', 'category__name', 'is_draft', 'created']
 	search_fields = ['title', 'author__username']
 	
 	filter_horizontal = ['tags']
-	date_hierarchy = 'publish_time'
 
-	formfield_overrides = {models.TextField: {'widget': UEditorWidget(width=1000,  file_path='files/',  image_path=settings.BLOG_IMAGE_URL,  scrawl_path=settings.BLOG_IMAGE_URL)}}
+	formfield_overrides = {models.TextField: {'widget': UEditorWidget(width=1000,  file_path='downloads/',  image_path=settings.BLOG_IMAGE_URL,  scrawl_path=settings.BLOG_IMAGE_URL)}}
 
 	def save_model(self, request, obj, form, change):
 		if not change:

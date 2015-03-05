@@ -32,7 +32,7 @@ class BlogBase(BaseView):
 
 	def get_context_data(self, extra_context):
 		context = {
-			'categorygories': Category.objects.exclude(count=0),
+			'categories': Category.objects.exclude(count=0),
 			'tags': Tag.objects.exclude(count=0).order_by('?')[:self.tags_shown_count],
 			'pblogs': Blog.objects.all().order_by('-click_count', '-created')[:8],
 		}
