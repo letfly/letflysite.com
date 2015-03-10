@@ -124,6 +124,7 @@ INSTALLED_APPS = (
 	'django.contrib.staticfiles',
 	'django.contrib.comments',
 	# Uncomment the next line to enable the admin:
+	'grappelli',
 	'django.contrib.admin',
 	# Uncomment the next line to enable admin documentation:
 	# 'django.contrib.admindocs',
@@ -138,6 +139,7 @@ INSTALLED_APPS = (
 	'widget_tweaks',
 	'captcha',
 	'common',
+	'ueditor',
 )
 
 # A sample logging configuration. The only tangible logging

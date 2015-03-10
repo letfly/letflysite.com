@@ -1,8 +1,14 @@
 {% load staticfiles %}
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>{% block title %}欢迎来访LetflySite{% endblock %}</title>
+	<meta name="description" content="{% block meta_desc %}Danny的个人网站，采用的Python Django框架开发而成，从兴趣到实践，意在学习、分享与记录。技术专注于Python与前端开发，包括Python、Django、HTML、CSS、JavaScript、Redis、Linux等。{% endblock %}">
+	<meta name="keywords" content="{% block meta_keywords %}编程,Python,Django,HTML,CSS,JavaScript,Redis,Linux,PHP,个人网站{% endblock %}">
+	{% block extra_metas %}
+	{% endblock %}
+	
 	<link href="{% static 'site/v1/css/base.css' %}" rel="stylesheet" type="text/css" />
 	{% block extra_link %}{% endblock %}
 	{% block extra_js %}{% endblock %}

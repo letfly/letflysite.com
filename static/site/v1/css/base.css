@@ -18,8 +18,6 @@ body {
 	position: relative;
 }
 ul, ol, dl {
-	padding: 0;
-	margin: 0;
 }
 h1, h2, h3, h4, h5, h6, p {
 	margin-top: 0;
@@ -137,6 +135,8 @@ h1, h2, h3, h4, h5, h6, p {
 }
 .listBox2 ul {
 	list-style-type: none;
+	margin: 0px;
+	padding: 0px;
 }
 .listBox2 ul a {
 	text-decoration: none;

@@ -15,6 +15,7 @@ urlpatterns = patterns('',
 	# url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
 	# Uncomment the next line to enable the admin:
+    url(r'^grappelli/', include('grappelli.urls')),
 	url(r'^admin/', include(admin.site.urls)),
 	url(r'^$', Index.as_view(), name='home'),
 	url(r'^blog/',include('lblog.urls')),
