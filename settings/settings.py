@@ -132,13 +132,13 @@ INSTALLED_APPS = (
 	#app
 	'lblog',
 	'core',
+	'common',
 	'lsite',
 	'user',
 		
 	# Tools
 	'widget_tweaks',
 	'captcha',
-	'common',
 	'ueditor',
 )
 
@@ -148,7 +148,7 @@ INSTALLED_APPS = (
 # See http://docs.djangoproject.com/en/dev/topics/logging for
 # more details on how to customize your logging configuration.
 LOG_LEVEL = 'DEBUG'
-LOG_FILE_PATH = 'dannysite.log'
+LOG_FILE_PATH = 'letflysite.log'
 LOGGING = {
 	'version': 1,
 	'disable_existing_loggers': False,

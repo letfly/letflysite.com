@@ -28,6 +28,7 @@
 .timeBox #time_month {
 	display: block;
 	height: 30px;
+	padding-top: 8px;
 }
 .infoBox {
 	width: 558px;

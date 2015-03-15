@@ -16,3 +16,6 @@
 [08Mar2015 16:40:15] ERROR [letflysite:/home/python/django/letflysite.com/common/log_utils.py:13] ('Error in parsing image:', 'cannot parse this image')
 [08Mar2015 16:49:28] ERROR [letflysite:/home/python/django/letflysite.com/common/log_utils.py:13] ('Error in parsing image:', 'cannot parse this image')
 [08Mar2015 16:58:34] ERROR [letflysite:/home/python/django/letflysite.com/common/log_utils.py:13] ('Error in parsing image:', 'cannot parse this image')
+[10Mar2015 13:48:00] ERROR [letflysite:/home/python/django/letflysite.com/common/log_utils.py:13] ('Error in parsing image:', 'cannot parse this image')
+[10Mar2015 13:48:33] ERROR [letflysite:/home/python/django/letflysite.com/common/log_utils.py:13] ('Error in parsing image:', 'cannot parse this image')
+[10Mar2015 13:49:31] ERROR [letflysite:/home/python/django/letflysite.com/common/log_utils.py:13] ('Error in parsing image:', 'cannot parse this image')

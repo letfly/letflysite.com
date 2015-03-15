@@ -67,7 +67,7 @@ class GetHome(BlogBase):
 			except Category.DoesNotExist:
 				raise Http404
 
-			blogs = Blog.objects.filter(category=category)
+			blogs = Blog.objects.filter(category=category).order_by('-created')
 			filter = category.name
 		elif tag_id:
 			if not tag_id.isdigit():
@@ -77,10 +77,10 @@ class GetHome(BlogBase):
 			except Tag.DoesNotExist:
 				raise Http404
 
-			blogs = tag.blog_set.all()
+			blogs = tag.blog_set.all().order_by('-created')
 			filter = tag.name
 		else:
-			blogs = Blog.objects.all()
+			blogs = Blog.objects.all().order_by('-created')
 			filter = None
 		return blogs.filter(is_published=True, is_draft=False), filter
 	
