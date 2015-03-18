@@ -18,7 +18,7 @@ from captcha.helpers import captcha_image_url
 from django.contrib.sites.models import get_current_site
 from django.db.models.expressions import F
 
-from lblog.models import Blog, Category, Tag
+from lblog.models import Category, Tag, Blog, Theme
 from common.paginator import Paginator
 import urlparse
 
@@ -33,8 +33,9 @@ class BlogBase(BaseView):
 	def get_context_data(self, extra_context):
 		context = {
 			'categories': Category.objects.exclude(count=0),
+			'themes': Theme.objects.exclude(count=0),
 			'tags': Tag.objects.exclude(count=0).order_by('?')[:self.tags_shown_count],
-			'pblogs': Blog.objects.all().order_by('-click_count', '-created')[:8],
+			'latest_blogs': Blog.objects.filter(is_draft=False).order_by('-click_count', '-created')[:8],
 		}
 		context.update(extra_context)
 		return context
@@ -58,7 +59,7 @@ class GetHome(BlogBase):
 			return [self.template_name_m]
 		return [self.template_name]
 	
-	def get_queryset(self, category_id, tag_id, q):
+	def get_queryset(self, category_id, theme_id, tag_id, q):
 		if category_id:
 			if not category_id.isdigit():
 				raise Http404
@@ -69,6 +70,16 @@ class GetHome(BlogBase):
 
 			blogs = Blog.objects.filter(category=category).order_by('-created')
 			filter = category.name
+		elif theme_id:
+			if not theme_id.isdigit():
+				raise Http404
+			try:
+				theme = Theme.objects.get(id=theme_id)
+			except Theme.DoesNotExist:
+				raise Http404
+
+			blogs = Blog.objects.filter(theme=theme).order_by('-created')
+			filter = theme.name
 		elif tag_id:
 			if not tag_id.isdigit():
 				raise Http404
@@ -84,10 +95,12 @@ class GetHome(BlogBase):
 			filter = None
 		return blogs.filter(is_published=True, is_draft=False), filter
 	
-	def get_url_prefix(self, full_path, category_id, tag_id, q):
+	def get_url_prefix(self, full_path, category_id, theme_id, tag_id, q):
 		query = []
 		if category_id:
 			query.append('cat={0}'.format(category_id))
+		elif theme_id:
+			query.append('the={0}'.format(theme_id))
 		elif tag_id:
 			query.append('tag={0}'.format(tag_id))
 		elif q:
@@ -104,16 +117,17 @@ class GetHome(BlogBase):
 
 	def get(self, request):
 		category_id = request.GET.get('cat', '')
+		theme_id = request.GET.get('the', '')
 		tag_id = request.GET.get('tag', '')
 		q = request.GET.get('search', '')
 
-		blogs, filter = self.get_queryset(category_id, tag_id, q)
+		blogs, filter = self.get_queryset(category_id, theme_id, tag_id, q)
 		paginator = Paginator(self.get_loader(blogs), self.page_size,
 							  self.section_size, blogs.count())
 		page_instance = paginator.page(request, self.get_session_key())
 
 		url_prefix = self.get_url_prefix(request.get_full_path(),
-										 category_id, tag_id, q)
+										 category_id, theme_id, tag_id, q)
 
 		extra_context = {'blogs': page_instance.page_items,
 						 'filter': filter,

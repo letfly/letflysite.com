@@ -31,13 +31,22 @@
 	{% else %}
 		<div class="listBox2 mt37">
 			<ul>
-				<li class="listTitle textCenter">POPULAR</li>
-				{% for blog in pblogs %}
+				<li class="listTitle textCenter">LATESTS</li>
+				{% for blog in latest_blogs %}
 					<a href="{% url 'blog_detail' blog.id %}" title="{{ blog.title }}"><li class="listItemF textCenter">{{ blog.title|truncatechars:20 }}</li></a>
 				{% endfor %}
 			</ul>
 		</div>
 	{% endif %}
+	<div class="listBox2 mt37">
+		<ul>
+			<li class="listTitle textCenter">COLUMNS</li>
+			{% for theme in themes %}
+				<a href="{% url 'blog_home' %}?the={{ theme.id }}"><li class="listItem fltlft textCenter">{{ theme.name }}</li></a>
+			{% endfor %}
+			<li class="clearfloat"></li>
+		</ul>
+	</div>
 	<div class="tagBox mt37">
 		<div class="title textCenter">TAGS</div>
 		<div class="tags textCenter">

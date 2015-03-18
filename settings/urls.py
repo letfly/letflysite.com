@@ -21,6 +21,7 @@ urlpatterns = patterns('',
 	url(r'^blog/',include('lblog.urls')),
 	url(r'^captcha/', include('captcha.urls')),
 	url(r'^ueditor/', include('ueditor.urls')),
+    url(r'^photo/', include('lshare.urls.photo')),
 )
 
 if settings.DEBUG:

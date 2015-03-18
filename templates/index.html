@@ -44,7 +44,7 @@
 			<ul>
 				<li class="listTitle textCenter">最近更新</li>
 				{% for blog in latest_blogs %}
-					<a href="{% url 'blog_detail' blog.id %}" title="{{ blog.title }}"><li class="listItem textCenter">{{ blog.title|truncatechars:20 }}</li></a>
+					<a href="{% url 'blog_detail' blog.id %}" title="{{ blog.title }}"><li class="listItem textCenter">{{ blog.title|truncatechars:18 }}</li></a>
 				{% endfor %}
 			</ul>
 		</div>
@@ -52,7 +52,7 @@
 			<ul>
 				<li class="listTitle textCenter">热门排行</li>
 				{% for blog in hottest_blogs %}
-					<a href="{% url 'blog_detail' blog.id %}" title="{{ blog.title }}"><li class="listItem textCenter">{{ blog.title|truncatechars:20 }}</li></a>
+					<a href="{% url 'blog_detail' blog.id %}" title="{{ blog.title }}"><li class="listItem textCenter">{{ blog.title|truncatechars:18 }}</li></a>
 				{% endfor %}
 			</ul>
 		</div>

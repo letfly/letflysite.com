@@ -135,6 +135,7 @@ INSTALLED_APPS = (
 	'common',
 	'lsite',
 	'user',
+	'lshare',
 		
 	# Tools
 	'widget_tweaks',
@@ -201,3 +202,90 @@ FOCUS_IMAGE_ROOT = 'images/focus'
 BLOG_IMAGE_URL = 'images/uploads/'
 
 ACCOUNT_LOCK_BY_ATTEMPTED_COUNT = 5
+
+import os
+PHOTO_ROOT = 'images/photos/'
+PHOTO_CONF = {
+    'limits': {
+        'formats': ['.jpg', '.gif', 'jpeg', '.bmp', '.png'],
+        'max_file_size': 10 * 1024 * 1024,
+        'min_image_size': (600, 350)
+    },
+    'origin': {
+        'dir': os.path.join(PHOTO_ROOT, 'original')
+    },
+    'dims': {
+        's950': {
+            'action': 'crop',
+            'size': (950, 350),
+            'dir': os.path.join(MEDIA_ROOT, PHOTO_ROOT, 's950'),
+            'quality': 100
+        },
+        's600': {
+            'action': 'crop',
+            'size': (600, 350),
+            'dir': os.path.join(MEDIA_ROOT, PHOTO_ROOT, 's600'),
+            'quality': 100
+        },
+        's350': {
+            'action': 'crop',
+            'size': (350, 350),
+            'dir': os.path.join(MEDIA_ROOT, PHOTO_ROOT, 's350'),
+            'quality': 100
+        },
+        's200': {
+            'action': 'crop',
+            'size': (200, 300),
+            'dir': os.path.join(MEDIA_ROOT, PHOTO_ROOT, 's200'),
+            'quality': 100
+        },
+        's200c': {
+            'action': 'crop',
+            'size': (200, 200),
+            'dir': os.path.join(MEDIA_ROOT, PHOTO_ROOT, 's200c'),
+            'quality': 100
+        },
+        's175d': {
+            'action': 'crop',
+            'size': (175, 350),
+            'dir': os.path.join(MEDIA_ROOT, PHOTO_ROOT, 's175d'),
+            'quality': 100
+        },
+        's300h': {
+            'action': 'crop',
+            'size': (300, 350),
+            'dir': os.path.join(MEDIA_ROOT, PHOTO_ROOT, 's300h'),
+            'quality': 100
+        },
+        's300l': {
+            'action': 'crop',
+            'size': (300, 200),
+            'dir': os.path.join(MEDIA_ROOT, PHOTO_ROOT, 's300l'),
+            'quality': 100
+        },
+        's300s': {
+            'action': 'crop',
+            'size': (300, 150),
+            'dir': os.path.join(MEDIA_ROOT, PHOTO_ROOT, 's300s'),
+            'quality': 100
+        },
+        's500': {
+            'action': 'crop',
+            'size': (500, 440),
+            'dir': os.path.join(MEDIA_ROOT, PHOTO_ROOT, 's500'),
+            'quality': 100
+        },
+        's250': {
+            'action': 'crop',
+            'size': (250, 200),
+            'dir': os.path.join(MEDIA_ROOT, PHOTO_ROOT, 's250'),
+            'quality': 100
+        },
+        's450': {
+            'action': 'crop',
+            'size': (450, 240),
+            'dir': os.path.join(MEDIA_ROOT, PHOTO_ROOT, 's450'),
+            'quality': 100
+        }
+    }
+}
