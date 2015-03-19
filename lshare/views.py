@@ -12,73 +12,76 @@ import random
 from django.templatetags.static import static
 from django.conf import settings
 import os
+from lshare.models import Inter
+from common.paginator import Paginator
+from lshare.models import InterCategory
 
 bg = static('site/v1/img/bgw.png')
 image_boxes_1 = {
-    'b1_1': {
-        'html': ['<div class="photoBoxN fltlft">',
-                 '<img class="scrollLoading" data-url="{0}" src="%s" width="350" height="350">' % bg, '</div>'],
-        'image_count': 1,
-        'size': ['s350']
-    },
-    'b1_2': {
-        'html': ['<div class="photoBoxN fltlft">',
-                 '<img class="scrollLoading" data-url="{0}" src="%s" width="175" height="175">' % bg,
-                 '<img class="scrollLoading" data-url="{0}" src="%s" width="175" height="175">' % bg,
-                 '<img class="scrollLoading" data-url="{0}" src="%s" width="175" height="175">' % bg,
-                 '<img class="scrollLoading" data-url="{0}" src="%s" width="175" height="175">' % bg, '</div>'],
-        'image_count': 4,
-        'size': ['s200c', 's200c', 's200c', 's200c']
-    },
-    'b1_3': {
-        'html': ['<div class="photoBoxN fltlft">',
-                 '<img class="scrollLoading" data-url="{0}" src="%s" width="175" height="350">' % bg,
-                 '<img class="scrollLoading" data-url="{0}" src="%s" width="175" height="175">' % bg,
-                 '<img class="scrollLoading" data-url="{0}" src="%s" width="175" height="175">' % bg, '</div>'],
-        'image_count': 3,
-        'size': ['s175d', 's200c', 's200c']
-    },
-    'b1_4': {
-        'html': ['<div class="photoBoxN fltlft">',
-                 '<img class="scrollLoading" data-url="{0}" src="%s" width="175" height="350">' % bg,
-                 '<img class="scrollLoading" data-url="{0}" src="%s" width="175" height="350">' % bg, '</div>'],
-        'image_count': 2,
-        'size': ['s175d', 's175d']
-    }
+	'b1_1': {
+		'html': ['<div class="photoBoxN fltlft">',
+				 '<img class="scrollLoading" data-url="{0}" src="%s" width="350" height="350">' % bg, '</div>'],
+		'image_count': 1,
+		'size': ['s350']
+	},
+	'b1_2': {
+		'html': ['<div class="photoBoxN fltlft">',
+				 '<img class="scrollLoading" data-url="{0}" src="%s" width="175" height="175">' % bg,
+				 '<img class="scrollLoading" data-url="{0}" src="%s" width="175" height="175">' % bg,
+				 '<img class="scrollLoading" data-url="{0}" src="%s" width="175" height="175">' % bg,
+				 '<img class="scrollLoading" data-url="{0}" src="%s" width="175" height="175">' % bg, '</div>'],
+		'image_count': 4,
+		'size': ['s200c', 's200c', 's200c', 's200c']
+	},
+	'b1_3': {
+		'html': ['<div class="photoBoxN fltlft">',
+				 '<img class="scrollLoading" data-url="{0}" src="%s" width="175" height="350">' % bg,
+				 '<img class="scrollLoading" data-url="{0}" src="%s" width="175" height="175">' % bg,
+				 '<img class="scrollLoading" data-url="{0}" src="%s" width="175" height="175">' % bg, '</div>'],
+		'image_count': 3,
+		'size': ['s175d', 's200c', 's200c']
+	},
+	'b1_4': {
+		'html': ['<div class="photoBoxN fltlft">',
+				 '<img class="scrollLoading" data-url="{0}" src="%s" width="175" height="350">' % bg,
+				 '<img class="scrollLoading" data-url="{0}" src="%s" width="175" height="350">' % bg, '</div>'],
+		'image_count': 2,
+		'size': ['s175d', 's175d']
+	}
 }
 image_boxes_2 = {
-    'b2_1': {
-        'html': ['<div class="photoBoxS fltlft">',
-                 '<img class="scrollLoading" data-url="{0}" src="%s" width="150" height="150">' % bg,
-                 '<img class="scrollLoading" data-url="{0}" src="%s" width="150" height="150">' % bg,
-                 '<img class="scrollLoading" data-url="{0}" src="%s" width="300" height="200">' % bg, '</div>'],
-        'image_count': 3,
-        'size': ['s200c', 's200c', 's300l'],
-        'width': 300,
-    },
-    'b2_2': {
-        'html': ['<div class="photoBoxS fltlft">',
-                 '<img class="scrollLoading" data-url="{0}" src="%s" width="300" height="200">' % bg,
-                 '<img class="scrollLoading" data-url="{0}" src="%s" width="300" height="150">' % bg, '</div>'],
-        'image_count': 2,
-        'size': ['s300l', 's300s'],
-        'width': 300,
-    },
-    'b2_3': {
-        'html': ['<div class="photoBoxS fltlft">',
-                 '<img class="scrollLoading" data-url="{0}" src="%s" width="300" height="150">' % bg,
-                 '<img class="scrollLoading" data-url="{0}" src="%s" width="300" height="200">' % bg, '</div>'],
-        'image_count': 2,
-        'size': ['s300s', 's300l'],
-        'width': 300,
-    },
-    'b2_4': {
-        'html': ['<div class="photoBoxB fltlft">',
-                 '<img class="scrollLoading" data-url="{0}" src="%s" width="600" height="350">' % bg, '</div>'],
-        'image_count': 1,
-        'size': ['s600'],
-        'width': 600,
-    }
+	'b2_1': {
+		'html': ['<div class="photoBoxS fltlft">',
+				 '<img class="scrollLoading" data-url="{0}" src="%s" width="150" height="150">' % bg,
+				 '<img class="scrollLoading" data-url="{0}" src="%s" width="150" height="150">' % bg,
+				 '<img class="scrollLoading" data-url="{0}" src="%s" width="300" height="200">' % bg, '</div>'],
+		'image_count': 3,
+		'size': ['s200c', 's200c', 's300l'],
+		'width': 300,
+	},
+	'b2_2': {
+		'html': ['<div class="photoBoxS fltlft">',
+				 '<img class="scrollLoading" data-url="{0}" src="%s" width="300" height="200">' % bg,
+				 '<img class="scrollLoading" data-url="{0}" src="%s" width="300" height="150">' % bg, '</div>'],
+		'image_count': 2,
+		'size': ['s300l', 's300s'],
+		'width': 300,
+	},
+	'b2_3': {
+		'html': ['<div class="photoBoxS fltlft">',
+				 '<img class="scrollLoading" data-url="{0}" src="%s" width="300" height="150">' % bg,
+				 '<img class="scrollLoading" data-url="{0}" src="%s" width="300" height="200">' % bg, '</div>'],
+		'image_count': 2,
+		'size': ['s300s', 's300l'],
+		'width': 300,
+	},
+	'b2_4': {
+		'html': ['<div class="photoBoxB fltlft">',
+				 '<img class="scrollLoading" data-url="{0}" src="%s" width="600" height="350">' % bg, '</div>'],
+		'image_count': 1,
+		'size': ['s600'],
+		'width': 600,
+	}
 }
 
 class GetPhotoHome(BaseView):
@@ -184,4 +187,56 @@ class GetPhotoHome(BaseView):
 			context.pop('top_photo')
 			return JsonResponse(status=1, data=context)
 
+		return self.render_to_response(context)
+
+class GetInterHome(BaseView):
+	template_name = 'lshare/interest.html'
+	template_name_ajax = 'lshare/includes/inbox.html'
+	template_name_m = 'lshare/interest_m.html'
+	template_name_m_ajax = 'lshare/includes/inbox_m.html'
+	page_size = 10
+	section_size = 30
+
+	def get_session_key(self):
+		return 'share:list'
+
+	def get_loader(self, shares):
+		def loader(offset, num):
+			return shares[offset:offset + num]
+		return loader
+
+	def get_template_names(self):
+		if self.request.is_ajax():
+			if self.request.session.get('VIEW_MODE') == 'mobile':
+				return [self.template_name_m_ajax]
+			return [self.template_name_m_ajax]
+		print self.request.session.get('VIEW_MODE')
+		if self.request.session.get('VIEW_MODE') == 'mobile':
+			return [self.template_name_m]
+		return [self.template_name]
+
+	def get(self, request):
+		inters = Inter.objects.filter(is_published=True).order_by('created')
+		paginator = Paginator(self.get_loader(inters), self.page_size,
+							  self.section_size, inters.count())
+		page_instance = paginator.page(request, self.get_session_key())
+
+		context = {
+			'page_instance': page_instance,
+		}
+
+		if request.is_ajax():
+			html = self.render_to_response(context)
+			html.render()
+			data = {
+				'html': html.content,
+				'has_next': page_instance.has_next()
+			}
+			return JsonResponse(status=1, data=data)
+
+		cates = InterCategory.objects.all()
+		context.update({
+			'cates': cates,
+			'cate_color_box_width': 79 * cates.count(),
+		})
 		return self.render_to_response(context)

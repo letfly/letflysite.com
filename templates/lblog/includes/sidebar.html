@@ -24,7 +24,7 @@
 			<ul>
 				<li class="listTitle textCenter">RECOMMANDS</li>
 				{% for blog in recommends %}
-					<a href="{% url 'blog_detail' blog.id %}" title="{{ blog.title }}"><li class="listItemF textCenter">{{ blog.title|truncatechars:20 }}</li></a>
+					<a href="{% url 'blog_detail' blog.id %}" title="{{ blog.title }}"><li class="listItemF textCenter">{{ blog.title|truncatechars:18 }}</li></a>
 				{% endfor %}
 			</ul>
 		</div>
@@ -33,7 +33,7 @@
 			<ul>
 				<li class="listTitle textCenter">LATESTS</li>
 				{% for blog in latest_blogs %}
-					<a href="{% url 'blog_detail' blog.id %}" title="{{ blog.title }}"><li class="listItemF textCenter">{{ blog.title|truncatechars:20 }}</li></a>
+					<a href="{% url 'blog_detail' blog.id %}" title="{{ blog.title }}"><li class="listItemF textCenter">{{ blog.title|truncatechars:18 }}</li></a>
 				{% endfor %}
 			</ul>
 		</div>

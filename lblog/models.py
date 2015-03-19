@@ -10,6 +10,7 @@ from django.db import models
 from django.db.models.expressions import F
 from django.db.models.signals import m2m_changed, pre_save, pre_delete
 from user.models import User
+from django.conf import settings
 
 class BaseModel(models.Model):
 	name = models.CharField(u'名称d', max_length=30)
@@ -77,12 +78,24 @@ class Blog(models.Model):
 	click_count = models.IntegerField(u'点击量', default=0, editable=False)
 	comment_count = models.IntegerField(u'评论数', default=0, editable=False)
 	
-	#def click(self, ip_addr):
-		#from core.utils import get_redis
+	def chg_pub_status(self):
+		self.is_published = self.is_published == False
+		self.save()
+	def chg_draft_status(self):
+		self.is_draft = self.is_draft == False
+		self.save()
+	
+	def click(self, ip_addr):
+		from core.utils import get_redis
 
-		#cache_key = settings.BLOG_VISITORS_CACHE_KEY.format(self.id)
-		#coon = get_redis()
-		#if int()
+		cache_key = settings.BLOG_VISITORS_CACHE_KEY.format(self.id)
+		conn = get_redis()
+		if int(conn.zincrby(cache_key, ip_addr)) == 1:
+			self.click_count = F('click_count') + 1
+			self.save()
+
+		if conn.zcard(cache_key) == 1:
+			conn.expire(cache_key, settings.BLOG_VISITORS_CACHE_TIMEOUT)
 
 	def __unicode__(self):
 		return unicode(self.title)

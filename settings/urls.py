@@ -22,6 +22,7 @@ urlpatterns = patterns('',
 	url(r'^captcha/', include('captcha.urls')),
 	url(r'^ueditor/', include('ueditor.urls')),
     url(r'^photo/', include('lshare.urls.photo')),
+	url(r'^interest/', include('lshare.urls.inter')),
 )
 
 if settings.DEBUG:

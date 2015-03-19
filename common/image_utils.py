@@ -7,7 +7,8 @@ LetflyWork Project
 
 import os
 import uuid
-from PIL import Image
+#from PIL import Image
+import Image
 import ImageFile
 import copy
 

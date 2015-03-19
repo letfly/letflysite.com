@@ -27,9 +27,11 @@ class Index(TemplateView):
 		context['focus'] = focuses[0] if focuses.exists() else None
 
 		blogs = Blog.objects.filter(is_published=True, is_draft=False).order_by('-created')
-		context['latest_blogs'] = blogs[:5]
-		context['hottest_blogs'] = random.sample(Blog.objects.all().order_by('-click_count', '-created')[:15], blogs.count() if blogs.count() < 5 else 5)
 		context['hottest_cates'] = Category.objects.all().order_by('-count')[:5]
+		context['latest_blogs'] = blogs[:5]
+		#context['hottest_blogs'] = random.sample(Blog.objects.all().order_by('-click_count', '-created')[:15], blogs.count() if blogs.count() < 5 else 5)
+		#context['hottest_blogs'] = blogs.order_by('-click_count')[:5]
+		context['hottest_blogs'] = Blog.objects.filter(is_published=True, is_draft=False).order_by('-click_count','-created')[:5]
 
 		#photos = Photo.objects.all()[:4]
 		#if photos.count() == 4:

@@ -1,0 +1,13 @@
+{% for inter in page_instance.page_items %}
+	<div class="inBox bg1" style="border-top-width: 2px; border-top-style: solid; border-top-color: #{{ inter.cate.color }};">
+		<div class="inTitle textCenter">
+			<a class="fs24" onMouseOver="this.style.color='#{{ inter.cate.color }}'" onMouseOut="this.style.color='#5e5e5e'" style="color: #5e5e5e; text-decoration: none;">{{ inter.title }}</a>
+		</div>
+		<div class="inImage">
+			<img src="{{ inter.cover.url }}" width="950px">
+		</div>
+		<div class="InDesc fs14">
+			{{ inter.content|safe }}
+		</div>
+	</div>
+{% endfor %}

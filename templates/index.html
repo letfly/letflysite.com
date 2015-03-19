@@ -24,7 +24,10 @@
 						<span>{{ focus.title }}</span>
 					</div>
 					<div id="my_focus_desc">
-						{{ focus.description|linebreaks }}
+						{{ focus.description|safe }}
+					</div>
+					<div id="my_focus_github">
+						<a href="http://blog.csdn.net/u012332571" style="font-size: 20px;"  target="_blank" style="border: 0;" height="42" width="104">LETFLY[飘帆]--CSDN</a>
 					</div>
 				</div>
 				<div class="clearfloat"></div>

@@ -5,27 +5,24 @@ Created on 2015-2-5
 @author: Letfly<letfly@outlook.com>
 LetflyWork Project
 '''
-
 from core.views import BaseView, AccessAuthMixin
-#from django.db.models.query_utils import Q
-from django.shortcuts import render_to_response
-from django.http.response import Http404, HttpResponseRedirect
-from django.template import RequestContext
-
 from django.views.generic.edit import FormView
-from captcha.models import CaptchaStore
-from captcha.helpers import captcha_image_url
-from django.contrib.sites.models import get_current_site
-from django.db.models.expressions import F
+from lblog.forms import CommentForm
 
-from lblog.models import Category, Tag, Blog, Theme
+from lblog.models import Blog
 from common.paginator import Paginator
 import urlparse
+from lblog.models import Category, Theme, Tag
+from django.http.response import Http404
+from django.db.models.query_utils import Q
 
-from lblog.forms import CommentForm 
 from core.models import DComment
 
+from django.contrib.sites.models import get_current_site
+from django.db.models.expressions import F
 from core.http import JsonResponse
+from captcha.models import CaptchaStore
+from captcha.helpers import captcha_image_url
 
 class BlogBase(BaseView):
 	tags_shown_count = 50
@@ -35,7 +32,7 @@ class BlogBase(BaseView):
 			'categories': Category.objects.exclude(count=0),
 			'themes': Theme.objects.exclude(count=0),
 			'tags': Tag.objects.exclude(count=0).order_by('?')[:self.tags_shown_count],
-			'latest_blogs': Blog.objects.filter(is_draft=False).order_by('-click_count', '-created')[:8],
+			'latest_blogs': Blog.objects.filter(is_draft=False, is_published=True).order_by('-created')[:8],
 		}
 		context.update(extra_context)
 		return context
@@ -90,6 +87,12 @@ class GetHome(BlogBase):
 
 			blogs = tag.blog_set.all().order_by('-created')
 			filter = tag.name
+		elif q:
+			blogs = Blog.objects.filter(Q(title__icontains=q) |
+										Q(tags__name__icontains=1) |
+										Q(content__icontains=q) |
+										Q(category__name__icontains=q)).distinct()
+			filter = q
 		else:
 			blogs = Blog.objects.all().order_by('-created')
 			filter = None
