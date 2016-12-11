@@ -2,11 +2,11 @@
 
 django == 1.5.4
 mysql-python == 1.2.3
-django-widget-tweaks = 1.3  #html form
-django-simple-captcha = 0.4.4  #captcha
+django-widget-tweaks == 1.3  #html form
+django-simple-captcha == 0.4.4  #captcha
 django-grappelli == 2.4.7  #Beautify administration interface
 six == 1.8.0  #a Python 2 and 3 compatibility library
-PIL == 1.1.7  #Python Imaging Library,use Imaging.tar to install
+Pillow == 1.7  #Python Imaging Library,use Imaging.tar to install
 chardet == 2.1.1  #Judgment of character encoding
 
 beautifulsoup4 == 4.3.2
