@@ -2,33 +2,32 @@ LetflySite
 =========
 
 Source code to letflysite.com
+Due to no money, the site has been moved to [LETFLY'S LAB](http://blog.csdn.net/u012332571)
 
-Visit my website at http://www.letflysite.com/
 
+### Introduction
 
-### 介绍
+LetflySite is a personal website of personal interest and study practice. The website is developed using the django framework, which mainly includes blogs and pictures.
 
-LetflySite是一个由个人兴趣与学习实践而生的个人网站。网站采用Django框架开发，功能主要包含博客和图片等。
+### Features
 
-### 功能
+* Account: register, login, change password, reset the password by mail, register by email, etc.
+* Blog: include tags, categories, rss feeds, searches, and more. To facilitate editing, but also embedded in the UEditor (baidu rich text editor).
+* Image: currently only supports the most basic browsing.
+* Interest: currently only supports the most basic browsing.
+* Other: on with feedback, mail queue, picture processing, paging function and so on.
 
-* 账户：注册、登录、修改密码、通过邮件重置密码、通过邮件邀请注册等；
-* 博客：包含标签、分类、RSS订阅、搜索等。为方便编辑，还嵌入了UEditor（百度富文本编辑器）；
-* 图片：目前仅支持最基本的浏览；
-* 兴趣：目前仅支持最基本的浏览；
-* 其他：关于与意见反馈、邮件队列、图片处理、分页功能等。
+### Use a third party package
 
-### 使用的第三方包
+* Django-simple-captcha: a verification code module.
+* Django Ueditor: baidu rich text editor. In order to meet the individual needs, the View has been recustomized.
 
-* django-simple-captcha：一个验证码模块；
-* DjangoUeditor：百度富文本编辑器。为适应个人需求，对View等进行了重新定制。
+### Currently imperfect function and known bugs
 
-### 目前未完善的功能和已知Bugs
+* Account: registration, password modification, password reset, etc. Not completed.
+* Ueditor: upload images such as rewrite the view does not consider the path after the incoming.
+* Mail: invitation email is not delivered.
 
-* Account: 注册、密码修改、密码重置等template未完成；
-* Ueditor: 上传图片等重写View后未考虑路径传入；
-* Mail: 注册邀请邮件未投递。
+### Copyright on LetflySite - UI
 
-### 关于LetflySite - UI的版权
-
-作为非设计出生的我来说，做一套像样的UI对我来说并不容易，因此我个人保留UI上的版权。感谢配合！
+As a non-design born for me, making a decent UI is not easy for me, so I personally keep the copyright on the UI.Thanks!
