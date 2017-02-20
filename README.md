@@ -1,7 +1,8 @@
 LetflySite
 =========
 
-Source code to letflysite.com
+Source code to letflysite.com.
+
 Due to no money, the site has been moved to [LETFLY'S LAB](http://blog.csdn.net/u012332571)
 
 
@@ -15,12 +16,12 @@ LetflySite is a personal website of personal interest and study practice. The we
 * Blog: include tags, categories, rss feeds, searches, and more. To facilitate editing, but also embedded in the UEditor (baidu rich text editor).
 * Image: currently only supports the most basic browsing.
 * Interest: currently only supports the most basic browsing.
-* Other: on with feedback, mail queue, picture processing, paging function and so on.
+* Other: on with feedback, mail queue, picture processing, paging function, etc.
 
 ### Use a third party package
 
 * Django-simple-captcha: a verification code module.
-* Django Ueditor: baidu rich text editor. In order to meet the individual needs, the View has been recustomized.
+* Django-ueditor: baidu rich text editor. In order to meet the individual needs, the view has been recustomized.
 
 ### Currently imperfect function and known bugs
 
