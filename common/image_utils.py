@@ -8,8 +8,8 @@ LetflyWork Project
 import os
 import uuid
 #from PIL import Image
-import Image
-import ImageFile
+from PIL import Image
+from PIL import ImageFile
 import copy
 
 from common.file_utils import is_file_exist

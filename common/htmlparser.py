@@ -7,7 +7,7 @@ LetflyWork Project
 '''
 
 import urllib2
-import ImageFile
+from PIL import ImageFile
 import chardet
 from bs4 import BeautifulSoup
 import platform

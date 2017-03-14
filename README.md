@@ -1,12 +1,33 @@
 LetflySite
-=========
+-------
 
 Source code to letflysite.com.
 
 Due to no money, the site has been moved to [LETFLY'S LAB](http://blog.csdn.net/u012332571)
 
+# Use
+### install
 
-### Introduction
+```
+mkvirtualenv letflysite.com --system-site-packages
+pip install -r ./requirements.txt
+```
+
+### run
+
+```
+python manage.py runserve
+mysql.server start
+```
+You should add user and password about your database in settings/settings.py.Then
+
+```
+python manage.py syncdb
+```
+
+Open a browser input http://127.0.0.1:8000/, then you can see the website.
+
+# Introduction
 
 LetflySite is a personal website of personal interest and study practice. The website is developed using the django framework, which mainly includes blogs and pictures.
 
@@ -32,3 +53,5 @@ LetflySite is a personal website of personal interest and study practice. The we
 ### Copyright on LetflySite - UI
 
 As a non-design born for me, making a decent UI is not easy for me, so I personally keep the copyright on the UI.Thanks!
+
+
