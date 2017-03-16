@@ -10,5 +10,5 @@ from django.conf.urls import patterns, url
 from lshare.views import GetPhotoHome
 
 urlpatterns = patterns('',
-	url(r'^$', GetPhotoHome.as_view(), name='photo_home'),
+    url(r'^$', GetPhotoHome.as_view(), name='photo_home'),
 )

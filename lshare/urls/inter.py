@@ -10,5 +10,5 @@ from django.conf.urls import patterns, url
 from lshare.views import GetInterHome
 
 urlpatterns = patterns('',
-	url(r'^$', GetInterHome.as_view(), name='inter_home'),
+    url(r'^$', GetInterHome.as_view(), name='inter_home'),
 )

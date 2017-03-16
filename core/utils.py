@@ -9,4 +9,4 @@ LetflyWork Project
 import redis
 
 def get_redis():
-	return redis.Redis()
+    return redis.Redis()

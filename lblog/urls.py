@@ -12,8 +12,8 @@ from lblog.views import GetHome, GetDetail, Comment
 from lblog.feeds import LatestBlogs
 
 urlpatterns = patterns('',
-	url(r'^$', GetHome.as_view(), name='blog_home'),
-	url(r'^(\d+)/$', GetDetail.as_view(), name='blog_detail'),
-	url(r'^(\d+)/comment/$', Comment.as_view(), name='blog_comment'),
-	url(r'^rss/$', LatestBlogs(), name='blog_rss'),
+    url(r'^$', GetHome.as_view(), name='blog_home'),
+    url(r'^(\d+)/$', GetDetail.as_view(), name='blog_detail'),
+    url(r'^(\d+)/comment/$', Comment.as_view(), name='blog_comment'),
+    url(r'^rss/$', LatestBlogs(), name='blog_rss'),
 )

@@ -12,7 +12,7 @@ import os
 from django.conf import settings
 
 def str_crc32(string):
-	return(hex(binascii.crc32(string.encode('utf8')))[2:])
+    return(hex(binascii.crc32(string.encode('utf8')))[2:])
 
 def focus_image_upload(instance, filename):
     filename = str_crc32(instance.title) + os.path.splitext(filename)[1]
